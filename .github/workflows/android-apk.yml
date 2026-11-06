@@ -34,7 +34,7 @@ jobs:
       - name: Prepare web assets
         run: |
           mkdir www
-          cp index.html styles.css app.js data-model.js storage.js sync.js manifest.json service-worker.js icon.svg icon-maskable.svg www/
+          cp index.html styles.css app.js data-model.js storage.js sync.js manifest.json service-worker.js icon.svg icon-maskable.svg styles-overrides.css www/
 
       - name: Add Android project
         run: npx cap add android
