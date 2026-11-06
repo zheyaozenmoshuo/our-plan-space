@@ -47,3 +47,9 @@ test('full backups have an in-app backup box with restore and delete controls', 
   assert.match(app, /deleteBackup/);
 });
 
+test('backup sharing falls back to sharing the backup content as text', () => {
+  assert.match(app, /const title='星愿同行完整备份'/);
+  assert.match(app, /当前设备没有系统分享功能/);
+  assert.doesNotMatch(app, /当前环境不支持直接分享文件/);
+});
+
