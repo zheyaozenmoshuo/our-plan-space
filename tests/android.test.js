@@ -9,8 +9,9 @@ const adaptiveIcon = fs.readFileSync(new URL('../android-resources/mipmap-anydpi
 test('Android build installs the Star Wish Together launcher icon', () => {
   assert.match(workflow, /mipmap-anydpi-v26\/ic_launcher\.xml/);
   assert.match(workflow, /mipmap-anydpi\/ic_launcher\.xml/);
+  assert.match(workflow, /@mipmap\/ic_launcher_round\|@drawable\/ic_launcher/);
+  assert.match(workflow, /@mipmap\/ic_launcher\|@drawable\/ic_launcher/);
   assert.match(icon, /#101530/);
   assert.match(icon, /#FFFFD58B/);
   assert.match(adaptiveIcon, /adaptive-icon/);
-  assert.doesNotMatch(workflow, /ic_launcher_foreground\|g/);
 });
