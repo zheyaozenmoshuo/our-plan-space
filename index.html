@@ -9,6 +9,7 @@
   <title>我们的共同计划</title>
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles-overrides.css">
 </head>
 <body>
   <div class="sky" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
@@ -48,30 +49,31 @@
   </main>
 
   <dialog id="planModal" class="modal"><form method="dialog" id="planForm" class="modal-card">
-    <button class="icon-button close" value="cancel" aria-label="关闭">×</button>
+    <button class="icon-button close" type="button" data-close-dialog="planModal" aria-label="关闭">×</button>
     <p class="eyebrow" id="planModalEyebrow">ADD A PLAN</p><h2 id="planModalTitle">添加一件想做的事</h2>
     <input type="hidden" id="planId">
     <label>这件事<input id="planTitle" maxlength="80" required placeholder="例如：一起去看一次日出"></label>
     <label>分类<select id="planCategory"><option>想去的地方</option><option>想一起体验</option><option>日常小事</option><option>未来目标</option></select></label>
     <label>备注<textarea id="planNote" maxlength="300" placeholder="可以写下为什么想和 TA 一起做"></textarea></label>
-    <div class="modal-actions"><button class="button" value="cancel">取消</button><button class="button primary" id="savePlanButton" value="default">保存</button></div>
+    <div class="modal-actions"><button class="button" type="button" data-close-dialog="planModal">取消</button><button class="button primary" id="savePlanButton" type="submit">保存</button></div>
   </form></dialog>
 
   <dialog id="memoryModal" class="modal"><form method="dialog" id="memoryForm" class="modal-card">
-    <button class="icon-button close" value="cancel" aria-label="关闭">×</button>
+    <button class="icon-button close" type="button" data-close-dialog="memoryModal" aria-label="关闭">×</button>
     <p class="eyebrow">A LITTLE MEMORY</p><h2 id="memoryModalTitle">留下这次回忆</h2>
     <input type="hidden" id="memoryPlanId"><input type="hidden" id="memoryId">
     <label>完成日期<input type="date" id="memoryDate"></label>
     <label>想说的话<textarea id="memoryText" maxlength="500" placeholder="今天最想记住的瞬间是……"></textarea></label>
-    <label>照片<input type="file" id="memoryPhoto" accept="image/*"></label>
-    <img id="memoryPreview" class="memory-preview" alt="照片预览" hidden>
-    <div class="modal-actions"><button class="button" value="cancel">取消</button><button class="button primary" value="default">保存回忆</button></div>
+    <label>照片（可多选）<input type="file" id="memoryPhoto" accept="image/*" multiple></label>
+    <div id="memoryPreview" class="memory-preview-grid" hidden></div>
+    <div class="modal-actions"><button class="button" type="button" data-close-dialog="memoryModal">取消</button><button class="button primary" type="submit">保存回忆</button></div>
   </form></dialog>
 
   <dialog id="syncModal" class="modal"><div class="modal-card">
-    <button class="icon-button close" id="closeSync" aria-label="关闭">×</button><p class="eyebrow">KEEP IN STEP</p><h2>交换我们的进度</h2>
-    <p class="muted">完整备份可以带上照片；二维码只交换计划、状态和文字。</p>
-    <div class="sync-actions"><button class="button primary" id="exportButton">导出完整备份</button><button class="button" id="importButton">导入备份文件</button><button class="button" id="qrButton">生成轻量同步码</button><button class="button" id="qrImportButton">导入轻量同步码</button><input type="file" id="backupFile" accept="application/json" hidden></div>
+    <button class="icon-button close" id="closeSync" type="button" aria-label="关闭">×</button><p class="eyebrow">KEEP IN STEP</p><h2>交换我们的进度</h2>
+    <p class="muted">完整备份会保存为 JSON 文件，包含照片；在另一部手机点“导入备份文件”选择它。轻量同步是复制文本后发给对方，再粘贴导入，不包含照片。</p>
+    <div class="sync-actions"><button class="button primary" id="exportButton">导出完整备份文件</button><button class="button" id="importButton">从文件导入进度</button><button class="button" id="qrButton">生成轻量同步内容（复制文本）</button><button class="button" id="qrImportButton">粘贴轻量同步内容</button><input type="file" id="backupFile" accept="application/json" hidden></div>
+    <p class="sync-hint">安卓 App 会打开系统分享/保存面板；浏览器会下载文件。下面出现的 OURPLAN 字符串就是轻量同步文本，需要完整复制后发送。</p>
     <pre id="qrOutput" class="qr-output" hidden></pre><div id="syncStatus" class="status-box" hidden></div>
   </div></dialog>
 
