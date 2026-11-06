@@ -12,12 +12,17 @@
   <link rel="stylesheet" href="styles-overrides.css">
 </head>
 <body>
+  <div id="appSplash" class="app-splash" aria-label="星愿同行正在启动">
+    <div class="splash-orbit"><span>✦</span><i></i><b>✦</b></div>
+    <strong>星愿同行</strong>
+    <small>一起把想做的事点亮</small>
+  </div>
   <div class="sky" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
   <main class="shell">
     <header class="hero">
       <div>
         <p class="eyebrow">OUR LITTLE UNIVERSE</p>
-        <h1 id="workspaceTitle">我们的共同计划</h1>
+        <h1 id="workspaceTitle">星愿同行</h1>
         <p class="hero-copy">把想一起做的事，慢慢变成我们走过的路。</p>
       </div>
       <div class="star-count" aria-label="已点亮星星"><span id="completedCount">0</span><small>颗星</small></div>
@@ -45,8 +50,7 @@
     <button class="utility-card" id="syncPanel"><span>⇄</span><strong>交换进度</strong><small>导出、分享或粘贴同步</small></button>
       <button class="utility-card" id="recycleBin"><span>⌁</span><strong>回收站</strong><small>查看并恢复误删内容</small></button>
     </section>
-    <button class="install-button" id="installButton" hidden>⌂ 安装到手机主屏幕</button>
-    <p class="app-version">测试版 0.3.0</p>
+    <p class="app-version">测试版 0.4.0 · 星愿同行</p>
   </main>
 
   <dialog id="planModal" class="modal"><form method="dialog" id="planForm" class="modal-card">
@@ -73,13 +77,13 @@
   <dialog id="syncModal" class="modal"><div class="modal-card">
     <button class="icon-button close" id="closeSync" type="button" aria-label="关闭">×</button><p class="eyebrow">KEEP IN STEP</p><h2>交换我们的进度</h2>
     <p class="muted">完整备份会保存为 JSON 文件，包含照片；在另一部手机点“导入备份文件”选择它。轻量同步是复制文本后发给对方，再粘贴导入，不包含照片。</p>
-    <div class="sync-actions"><button class="button primary" id="exportButton">导出完整备份文件</button><button class="button" id="importButton">从文件导入进度</button><button class="button" id="qrButton">生成轻量同步内容（复制文本）</button><button class="button" id="qrImportButton">粘贴轻量同步内容</button><input type="file" id="backupFile" accept="application/json" hidden></div>
-    <p class="sync-hint">安卓 App 会打开系统分享/保存面板；浏览器会下载文件。下面出现的 OURPLAN 字符串就是轻量同步文本，需要完整复制后发送。</p>
+    <div class="sync-actions"><button class="button primary" id="exportButton">保存完整备份到 App</button><button class="button" id="shareBackupButton">分享完整备份</button><button class="button" id="importButton">从文件导入进度</button><button class="button" id="qrButton">生成轻量同步内容（复制文本）</button><button class="button" id="qrImportButton">粘贴轻量同步内容</button><input type="file" id="backupFile" accept="application/json" hidden></div>
+    <p class="sync-hint">完整备份会先放进 App 内备份箱；需要换手机时再点“分享完整备份”。轻量同步内容会优先打开系统分享界面，下面的 OURPLAN 字符串也可手动复制。</p>
+    <div class="backup-box"><h3>App 内备份箱</h3><div id="backupList" class="backup-list"></div></div>
     <pre id="qrOutput" class="qr-output" hidden></pre><div id="syncStatus" class="status-box" hidden></div>
   </div></dialog>
 
   <dialog id="recycleModal" class="modal"><div class="modal-card"><button class="icon-button close" id="closeRecycle" aria-label="关闭">×</button><p class="eyebrow">RECOVERY</p><h2>回收站</h2><div id="recycleList" class="recycle-list"></div></div></dialog>
-  <dialog id="installModal" class="modal"><div class="modal-card"><button class="icon-button close" id="closeInstall" aria-label="关闭">×</button><p class="eyebrow">KEEP IT CLOSE</p><h2>把它放到手机桌面</h2><p class="muted">安卓：在浏览器菜单中选择“安装应用”或“添加到主屏幕”。<br><br>iPhone：在 Safari 点击分享按钮，再选择“添加到主屏幕”。安装后会像 App 一样从桌面打开。</p><div class="modal-actions"><button class="button primary" id="installDone">知道了</button></div></div></dialog>
   <div id="toast" class="toast" role="status"></div>
   <script src="app.js"></script>
 </body>
