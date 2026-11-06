@@ -34,7 +34,8 @@ jobs:
       - name: Prepare web assets
         run: |
           mkdir www
-          cp index.html styles.css app.js data-model.js storage.js sync.js manifest.json service-worker.js icon.svg icon-maskable.svg styles-overrides.css www/
+          cp index.html styles.css app.js data-model.js storage.js sync.js manifest.json service-worker.js icon.svg icon-maskable.svg styles-overrides.css native-plugins-entry.js www/
+          npx esbuild native-plugins-entry.js --bundle --format=iife --outfile=www/native-plugins.js
 
       - name: Add Android project
         run: npx cap add android

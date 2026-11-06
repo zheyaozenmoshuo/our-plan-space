@@ -58,3 +58,11 @@ test('pasted backup text can be imported alongside light sync codes', () => {
   assert.match(app, /JSON\.parse\(raw\)/);
 });
 
+test('each in-app backup can use the Android native file share bridge', () => {
+  assert.match(app, /data-backup-share/);
+  assert.match(app, /native-plugins\.js/);
+  assert.match(app, /Filesystem\.writeFile/);
+  assert.match(app, /Share\.share/);
+  assert.match(app, /directory:'CACHE'/);
+});
+
