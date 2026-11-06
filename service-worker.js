@@ -1,8 +1,9 @@
-const CACHE_NAME = 'our-plan-space-shell-v1';
+const CACHE_NAME = 'our-plan-space-shell-v2';
 const APP_SHELL = [
   './',
   './index.html',
   './styles.css',
+  './styles-overrides.css',
   './app.js',
   './manifest.json',
   './icon.svg',
