@@ -49,6 +49,7 @@ jobs:
           cp android-resources/mipmap-anydpi/ic_launcher_round.xml android/app/src/main/res/mipmap-anydpi/ic_launcher_round.xml
           cp android-resources/mipmap-anydpi-v26/ic_launcher.xml android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
           cp android-resources/mipmap-anydpi-v26/ic_launcher_round.xml android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+          sed -i -e 's|@mipmap/ic_launcher_round|@drawable/ic_launcher|g' -e 's|@mipmap/ic_launcher|@drawable/ic_launcher|g' android/app/src/main/AndroidManifest.xml
 
       - name: Sync web assets
         run: npx cap sync android
