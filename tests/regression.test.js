@@ -53,3 +53,8 @@ test('backup sharing falls back to sharing the backup content as text', () => {
   assert.doesNotMatch(app, /当前环境不支持直接分享文件/);
 });
 
+test('pasted backup text can be imported alongside light sync codes', () => {
+  assert.match(html, /粘贴同步内容（轻量码或备份文本）/);
+  assert.match(app, /JSON\.parse\(raw\)/);
+});
+
