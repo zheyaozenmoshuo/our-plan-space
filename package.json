@@ -1,0 +1,16 @@
+{
+  "name": "our-plan-space",
+  "version": "1.0.0",
+  "private": true,
+  "description": "我们的计划：情侣共享计划与回忆空间",
+  "scripts": {
+    "test": "node --test tests/*.test.js"
+  },
+  "dependencies": {
+    "@capacitor/core": "^7.4.3"
+  },
+  "devDependencies": {
+    "@capacitor/android": "^7.4.3",
+    "@capacitor/cli": "^7.4.3"
+  }
+}
