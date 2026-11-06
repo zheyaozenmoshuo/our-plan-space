@@ -7,7 +7,9 @@
     "test": "node --test tests/*.test.js"
   },
   "dependencies": {
-    "@capacitor/core": "^7.4.3"
+    "@capacitor/core": "^7.4.3",
+    "@capacitor/filesystem": "^7.0.0",
+    "@capacitor/share": "^7.0.0"
   },
   "devDependencies": {
     "@capacitor/android": "^7.4.3",
