@@ -39,6 +39,12 @@ jobs:
       - name: Add Android project
         run: npx cap add android
 
+      - name: Apply app icon
+        run: |
+          mkdir -p android/app/src/main/res/drawable
+          cp android-resources/drawable/ic_launcher_foreground.xml android/app/src/main/res/drawable/ic_launcher_foreground.xml
+          sed -i 's|@mipmap/ic_launcher|@drawable/ic_launcher_foreground|g' android/app/src/main/AndroidManifest.xml
+
       - name: Sync web assets
         run: npx cap sync android
 
