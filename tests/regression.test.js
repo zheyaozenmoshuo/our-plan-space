@@ -4,6 +4,7 @@ import fs from 'node:fs';
 
 const html = fs.readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const app = fs.readFileSync(new URL('../app.js', import.meta.url), 'utf8');
+const manifest = JSON.parse(fs.readFileSync(new URL('../manifest.json', import.meta.url), 'utf8'));
 
 test('memory cancel controls cannot submit the memory form', () => {
   assert.match(html, /id="memoryModal"[\s\S]*button[^>]+type="button"[^>]+data-close-dialog="memoryModal"/);
@@ -24,9 +25,25 @@ test('sync panel explains backup location and text sync usage', () => {
 });
 
 test('sync actions can invoke the system share sheet and expose the app version', () => {
-  assert.match(html, /测试版 0\.3\.0/);
+  assert.match(html, /测试版 0\.4\.0/);
   assert.match(app, /navigator\.share/);
   assert.match(app, /navigator\.canShare/);
   assert.match(app, /APP_VERSION/);
+});
+
+test('selected app identity is reflected in name, icon, and startup animation', () => {
+  assert.equal(manifest.name, '星愿同行');
+  assert.equal(manifest.short_name, '星愿同行');
+  assert.match(html, /id="appSplash"/);
+  assert.match(html, /星愿同行/);
+  assert.match(app, /appSplash/);
+});
+
+test('full backups have an in-app backup box with restore and delete controls', () => {
+  assert.match(html, /id="backupList"/);
+  assert.match(html, /保存完整备份到 App/);
+  assert.match(app, /BACKUP_KEY/);
+  assert.match(app, /restoreBackup/);
+  assert.match(app, /deleteBackup/);
 });
 
