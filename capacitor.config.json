@@ -1,6 +1,6 @@
 {
   "appId": "com.zheyaozenmoshuo.ourplanspace",
   "appName": "我们的计划",
-  "webDir": ".",
+  "webDir": "www",
   "bundledWebRuntime": false
 }
