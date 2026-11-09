@@ -108,7 +108,9 @@ test('shared profile easter egg has an isolated read-only modal', () => {
   assert.match(app, /sharedProfileClickCount===5/);
   assert.match(app, /1500/);
   assert.match(app, /第一件共同完成的事，正在等你们写下/);
-  assert.match(app, /sharedProfileCode/);
+  assert.match(app, /一起完成了 .* 件事/);
+  assert.doesNotMatch(html, /sharedProfileCode/);
+  assert.doesNotMatch(app, /sharedProfileCode/);
 });
 
 test('merging different spaces adopts one shared profile identity', () => {

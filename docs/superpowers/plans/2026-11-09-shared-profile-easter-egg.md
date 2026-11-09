@@ -22,7 +22,6 @@
 - 连续点击计数：点击间隔过长时应重新计数，避免误触发。
 - 空数据状态：没有完成计划或回忆时不能出现虚假统计。
 - 计划删除/恢复和同步合并后：档案统计应跟随当前有效数据更新。
-- 档案编号：同一个共同空间在两台设备上应显示一致编号。
 - 弹窗关闭：关闭档案后不能修改计划或回忆数据。
 
 ---
@@ -37,7 +36,7 @@
 
 - [ ] **Step 1: Write the failing tests**
 
-增加测试，验证：档案弹窗存在；首页星星区域存在彩蛋点击绑定；代码包含 5 次点击阈值、计时重置、空状态文案、完成计划和回忆统计、短档案编号计算。
+增加测试，验证：档案弹窗存在；首页星星区域存在彩蛋点击绑定；代码包含 5 次点击阈值、计时重置、空状态文案、完成计划和回忆统计。
 
 - [ ] **Step 2: Run the focused tests**
 
@@ -87,15 +86,11 @@ Expected: 结构相关测试通过，行为相关测试仍因 JS 未实现而失
 
 从 `activePlans()` 和 `activeMemories()` 计算有效计划数、已完成计划数、回忆数；从完成计划中找到最早完成的一项；没有数据时使用设计稿中的空状态文案。
 
-- [ ] **Step 3: Implement the stable profile code**
-
-从 `workspace.id` 生成固定的短档案编号，同一共同空间在不同设备上保持一致；不展示完整内部 ID。
-
-- [ ] **Step 4: Wire close behavior and render refresh**
+- [ ] **Step 3: Wire close behavior and render refresh**
 
 档案弹窗关闭后只恢复界面状态；每次打开重新计算，确保同步、恢复和删除后数据准确。
 
-- [ ] **Step 5: Run the full test suite**
+- [ ] **Step 4: Run the full test suite**
 
 Run: `node --check app.js; npm test`
 
