@@ -66,3 +66,17 @@ test('each in-app backup can use the Android native file share bridge', () => {
   assert.match(app, /directory:'CACHE'/);
 });
 
+test('memory cards open a dedicated read-only detail view', () => {
+  assert.match(html, /id="memoryViewModal"/);
+  assert.match(app, /openMemoryView/);
+  assert.match(app, /data-memory-action="view"/);
+});
+
+test('memory detail supports photo switching, copying, downloading, and empty state', () => {
+  assert.match(app, /copyMemoryPhoto/);
+  assert.match(app, /downloadMemoryPhoto/);
+  assert.match(app, /ClipboardItem/);
+  assert.match(app, /URL\.createObjectURL/);
+  assert.match(app, /没有保存照片/);
+});
+
