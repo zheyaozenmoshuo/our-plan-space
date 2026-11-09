@@ -74,6 +74,25 @@ async function shareNativeBackup(item){const plugins=await loadNativePlugins();i
 async function shareStoredBackup(backupId){const item=loadBackups().find(x=>x.id===backupId);if(!item)return;const nativeShared=await shareNativeBackup(item);if(nativeShared)return showSyncStatus('已打开 Android 系统分享面板，分享的是完整备份文件。');if(nativeShared==='cancelled')return;const title='星愿同行完整备份';const description='这是星愿同行的完整备份，可发送给另一部手机导入。';const file=new File([item.json],`星愿同行备份-${item.createdAt.slice(0,10)}.json`,{type:'application/json'});if(typeof navigator.share==='function'&&typeof navigator.canShare==='function'&&navigator.canShare({files:[file]})){try{await navigator.share({title,text:description,files:[file]});showSyncStatus('已打开系统分享面板，可以分享到微信、QQ、文件管理器等。')}catch(error){if(error?.name==='AbortError')showSyncStatus('已取消分享，备份仍保存在 App 内备份箱。')}return}const shared=await shareText(title,`${description}\n\n${item.json}`);if(shared){showSyncStatus('当前设备不支持文件分享，已改为分享备份文本；接收方可粘贴到“粘贴同步内容”导入。');return}try{await navigator.clipboard.writeText(item.json);showSyncStatus('当前设备没有系统分享功能，备份内容已复制到剪贴板；仍保存在 App 内备份箱。')}catch(error){showSyncStatus('当前设备没有系统分享功能，备份仍保存在 App 内备份箱。')}}
 async function shareBackup(){const item=saveBackupSnapshot();if(!item)return;await shareStoredBackup(item.id)}
 function mergeImported(incoming){if(incoming.id!==workspace.id){showSyncStatus('这个文件属于另一个共同空间，已拒绝导入。');return}const maps=(a,b)=>{const map=new Map(a.map(x=>[x.id,x]));let added=0,updated=0,conflicts=0;for(const item of b){const old=map.get(item.id);if(!old){map.set(item.id,clone(item));added++}else{conflicts++;if(new Date(item.updatedAt)>new Date(old.updatedAt)){map.set(item.id,clone(item));updated++}}}return{items:[...map.values()],added,updated,conflicts}};const plans=maps(workspace.plans,incoming.plans||[]),memories=maps(workspace.memories,incoming.memories||[]);if(!confirm(`发现新增 ${plans.added+memories.added} 条、更新 ${plans.updated+memories.updated} 条、冲突 ${plans.conflicts+memories.conflicts} 条。\n确定后才会合并。`))return;workspace.plans=plans.items;workspace.memories=memories.items;persist();render();showSyncStatus('导入完成，当前设备已更新。')}
+function mergeImported(incoming){
+  if(incoming.id!==workspace.id){
+    const emptyWorkspace=workspace.plans.length===0&&workspace.memories.length===0;
+    if(emptyWorkspace){
+      if(!confirm('检测到这是另一部手机的共同空间，是否用这份备份初始化当前设备？'))return;
+      workspace=clone(incoming);
+      persist();
+      render();
+      showSyncStatus('已用这份备份初始化当前设备，计划和回忆已恢复。');
+      return;
+    }
+    showSyncStatus('当前设备已有内容，无法直接导入另一个共同空间；请先备份当前内容。');
+    return;
+  }
+  const maps=(a,b)=>{const map=new Map(a.map(x=>[x.id,x]));let added=0,updated=0,conflicts=0;for(const item of b){const old=map.get(item.id);if(!old){map.set(item.id,clone(item));added++}else{conflicts++;if(new Date(item.updatedAt)>new Date(old.updatedAt)){map.set(item.id,clone(item));updated++}}}return{items:[...map.values()],added,updated,conflicts}};
+  const plans=maps(workspace.plans,incoming.plans||[]),memories=maps(workspace.memories,incoming.memories||[]);
+  if(!confirm(`发现新增 ${plans.added+memories.added} 条、更新 ${plans.updated+memories.updated} 条、冲突 ${plans.conflicts+memories.conflicts} 条。\n确定后才会合并。`))return;
+  workspace.plans=plans.items;workspace.memories=memories.items;persist();render();showSyncStatus('导入完成，当前设备已更新。');
+}
 function importLocalFile(file){const reader=new FileReader();reader.onload=()=>{try{const parsed=JSON.parse(reader.result);if(parsed.schemaVersion!==1||!parsed.workspace)throw new Error('文件格式不支持');mergeImported(parsed.workspace)}catch(error){showSyncStatus(error.message||'导入失败')}};reader.readAsText(file)}
 function qrPayloadLocal(){const light=clone(workspace);light.memories=(light.memories||[]).map(m=>({...m,photos:[]}));const encoded=btoa(unescape(encodeURIComponent(JSON.stringify({schemaVersion:1,workspace:light}))));if(encoded.length>3500){showSyncStatus('同步内容太长，二维码不适合承载，请使用完整备份文件。');return null}return `OURPLAN:${encoded}`}
 function showSyncStatus(message){const el=document.getElementById('syncStatus');el.hidden=false;el.textContent=message}

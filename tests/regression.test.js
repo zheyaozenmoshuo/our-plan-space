@@ -58,6 +58,12 @@ test('pasted backup text can be imported alongside light sync codes', () => {
   assert.match(app, /JSON\.parse\(raw\)/);
 });
 
+test('a backup can initialize an empty device with a different workspace id', () => {
+  assert.match(app, /workspace\.plans\.length===0&&workspace\.memories\.length===0/);
+  assert.match(app, /用这份备份初始化当前设备/);
+  assert.match(app, /workspace=clone\(incoming\)/);
+});
+
 test('each in-app backup can use the Android native file share bridge', () => {
   assert.match(app, /data-backup-share/);
   assert.match(app, /native-plugins\.js/);
