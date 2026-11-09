@@ -111,3 +111,7 @@ test('shared profile easter egg has an isolated read-only modal', () => {
   assert.match(app, /sharedProfileCode/);
 });
 
+test('merging different spaces adopts one shared profile identity', () => {
+  assert.match(app, /workspace\.id=incoming\.id/);
+});
+

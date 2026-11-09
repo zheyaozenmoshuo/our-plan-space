@@ -90,6 +90,7 @@ function mergeImported(incoming){
       return;
     }
     if(!confirm('两台设备的共同空间不同，是否把这份备份合并到当前共同空间？当前内容不会直接删除。'))return;
+    workspace.id=incoming.id;
   }
   const maps=(a,b)=>{const map=new Map(a.map(x=>[x.id,x]));let added=0,updated=0,conflicts=0;for(const item of b){const old=map.get(item.id);if(!old){map.set(item.id,clone(item));added++}else{conflicts++;if(new Date(item.updatedAt)>new Date(old.updatedAt)){map.set(item.id,clone(item));updated++}}}return{items:[...map.values()],added,updated,conflicts}};
   const plans=maps(workspace.plans,incoming.plans||[]),memories=maps(workspace.memories,incoming.memories||[]);
