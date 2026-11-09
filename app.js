@@ -7,6 +7,8 @@ let activeCategory = '全部';
 let currentPhotos = [];
 let currentViewMemoryId = '';
 let currentViewPhotoIndex = 0;
+let sharedProfileClickCount = 0;
+let sharedProfileClickTimer = null;
 
 function id(prefix) { return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`; }
 function iso() { return new Date().toISOString(); }
@@ -23,6 +25,9 @@ function showToast(message){const el=document.getElementById('toast');el.textCon
 function dismissSplash(){const splash=document.getElementById('appSplash');if(!splash)return;setTimeout(()=>{splash.classList.add('is-hidden');setTimeout(()=>splash.remove(),500)},900)}
 function openDialog(id){document.getElementById(id).showModal()}
 function closeDialog(id){document.getElementById(id).close()}
+function sharedProfileCode(value){let hash=0;for(const char of String(value||'')){hash=((hash<<5)-hash)+char.charCodeAt(0);hash|=0}return `SP-${Math.abs(hash).toString(36).toUpperCase().padStart(6,'0').slice(0,6)}`}
+function openSharedProfile(){const plans=activePlans();const completedPlans=plans.filter(plan=>plan.status==='completed');const memories=activeMemories();const firstPlan=completedPlans.slice().sort((a,b)=>(a.completedAt||a.updatedAt).localeCompare(b.completedAt||b.updatedAt))[0];const completedCount=completedPlans.length;document.getElementById('sharedProfileCreatedAt').textContent=workspace.createdAt?.slice(0,10)||'—';document.getElementById('sharedProfilePlanCount').textContent=completedCount;document.getElementById('sharedProfileMemoryCount').textContent=memories.length;document.getElementById('sharedProfileFirstPlan').textContent=firstPlan?`${firstPlan.title} · ${firstPlan.completedAt||'—'}`:'—';document.getElementById('sharedProfileCode').textContent=sharedProfileCode(workspace.id);document.getElementById('sharedProfileMessage').textContent=completedCount?`你们已经一起完成了 ${completedCount} 件小事，故事还在继续。`:'第一件共同完成的事，正在等你们写下';openDialog('sharedProfileModal')}
+function handleSharedProfileTrigger(){sharedProfileClickCount++;clearTimeout(sharedProfileClickTimer);sharedProfileClickTimer=setTimeout(()=>{sharedProfileClickCount=0},1500);if(sharedProfileClickCount===5){sharedProfileClickCount=0;openSharedProfile()}}
 function render(){
   const plans=activePlans(); const completed=plans.filter(p=>p.status==='completed').length; const percent=plans.length?Math.round(completed/plans.length*100):0;
   document.getElementById('workspaceTitle').textContent=workspace.title; document.getElementById('completedCount').textContent=completed; document.getElementById('progressBar').style.width=`${percent}%`; document.getElementById('progressText').textContent=plans.length?`已完成 ${completed} / ${plans.length} 件事`:'还没有完成的计划'; document.getElementById('progressPercent').textContent=`${percent}%`;
@@ -101,6 +106,7 @@ document.getElementById('addPlanButton').onclick=()=>openPlan();document.getElem
 document.getElementById('exportButton').onclick=saveBackupSnapshot;document.getElementById('shareBackupButton').onclick=shareBackup;document.getElementById('importButton').onclick=()=>document.getElementById('backupFile').click();document.getElementById('backupFile').onchange=e=>e.target.files[0]&&importLocalFile(e.target.files[0]);document.getElementById('qrButton').onclick=generateSyncCode;document.getElementById('qrImportButton').onclick=importSyncCode;document.getElementById('closeSync').onclick=()=>closeDialog('syncModal');document.getElementById('closeRecycle').onclick=()=>closeDialog('recycleModal');
 document.getElementById('downloadMemoryPhoto').onclick=downloadMemoryPhoto;document.getElementById('editMemoryFromView').onclick=()=>{const idValue=currentViewMemoryId;closeDialog('memoryViewModal');openMemory(null,idValue)};document.getElementById('deleteMemoryFromView').onclick=()=>{const idValue=currentViewMemoryId;closeDialog('memoryViewModal');deleteMemory(idValue)};
 if('serviceWorker' in navigator && (location.protocol==='https:'||location.hostname==='localhost'))navigator.serviceWorker.register('./service-worker.js').catch(()=>showToast('离线缓存暂时不可用'));
+document.getElementById('stars').onclick=handleSharedProfileTrigger;
 render();
 dismissSplash();
 

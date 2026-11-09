@@ -99,3 +99,15 @@ test('Android memory photo actions use gallery storage and fallback storage', ()
   assert.match(app, /native\.Share\.share/);
 });
 
+test('shared profile easter egg has an isolated read-only modal', () => {
+  assert.match(html, /id="sharedProfileModal"/);
+  assert.match(html, /id="sharedProfilePlanCount"/);
+  assert.match(html, /id="sharedProfileMemoryCount"/);
+  assert.match(app, /sharedProfileClickCount/);
+  assert.match(app, /openSharedProfile/);
+  assert.match(app, /sharedProfileClickCount===5/);
+  assert.match(app, /1500/);
+  assert.match(app, /第一件共同完成的事，正在等你们写下/);
+  assert.match(app, /sharedProfileCode/);
+});
+

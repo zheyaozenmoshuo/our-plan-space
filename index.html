@@ -31,7 +31,7 @@
     <section class="constellation" aria-label="共同进度">
       <div class="progress-line"><span id="progressBar"></span></div>
       <div class="progress-meta"><span id="progressText">还没有完成的计划</span><span id="progressPercent">0%</span></div>
-      <div class="stars" id="stars" aria-hidden="true"></div>
+      <div class="stars shared-profile-trigger" id="stars" aria-hidden="true" title="星星里藏着一份小秘密"></div>
     </section>
 
     <section class="toolbar">
@@ -83,6 +83,24 @@
     <div id="memoryViewGallery" class="memory-view-gallery"></div>
     <div class="memory-view-tools"><button class="button" id="downloadMemoryPhoto" type="button">保存到手机</button></div>
     <div class="modal-actions"><button class="button" id="editMemoryFromView" type="button">编辑回忆</button><button class="button" id="deleteMemoryFromView" type="button">删除回忆</button></div>
+  </div></dialog>
+
+  <dialog id="sharedProfileModal" class="modal shared-profile-modal"><div class="modal-card shared-profile-card">
+    <button class="icon-button close" type="button" data-close-dialog="sharedProfileModal" aria-label="关闭专属档案">×</button>
+    <div class="shared-profile-sparkle">✦</div>
+    <p class="eyebrow">OUR LITTLE RECORD</p>
+    <h2>我们的专属档案</h2>
+    <p class="shared-profile-message" id="sharedProfileMessage"></p>
+    <div class="shared-profile-stats">
+      <div><strong id="sharedProfilePlanCount">0</strong><span>已完成计划</span></div>
+      <div><strong id="sharedProfileMemoryCount">0</strong><span>段共同回忆</span></div>
+    </div>
+    <div class="shared-profile-details">
+      <p><span>共同空间创建于</span><strong id="sharedProfileCreatedAt">—</strong></p>
+      <p><span>最早完成的计划</span><strong id="sharedProfileFirstPlan">—</strong></p>
+      <p><span>专属档案编号</span><strong id="sharedProfileCode">—</strong></p>
+    </div>
+    <p class="shared-profile-hint">这份记录会随着你们一起完成的事情慢慢变完整。</p>
   </div></dialog>
 
   <dialog id="syncModal" class="modal"><div class="modal-card">
