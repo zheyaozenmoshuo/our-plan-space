@@ -80,15 +80,17 @@ test('memory cards open a dedicated read-only detail view', () => {
 });
 
 test('memory detail supports photo switching, copying, downloading, and empty state', () => {
-  assert.match(app, /copyMemoryPhoto/);
   assert.match(app, /downloadMemoryPhoto/);
-  assert.match(app, /ClipboardItem/);
   assert.match(app, /URL\.createObjectURL/);
   assert.match(app, /没有保存照片/);
 });
 
-test('Android memory photo actions use native clipboard, gallery storage, and fallback storage', () => {
-  assert.match(app, /native\.Clipboard\.write/);
+test('memory detail only exposes saving photos, not clipboard copying', () => {
+  assert.doesNotMatch(html, /id="copyMemoryPhoto"/);
+  assert.doesNotMatch(app, /document\.getElementById\('copyMemoryPhoto'\)/);
+});
+
+test('Android memory photo actions use gallery storage and fallback storage', () => {
   assert.match(app, /native\.Media\.savePhoto/);
   assert.match(app, /albumIdentifier/);
   assert.match(app, /星愿同行/);
