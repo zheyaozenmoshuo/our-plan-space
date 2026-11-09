@@ -62,6 +62,7 @@ test('a backup can initialize an empty device with a different workspace id', ()
   assert.match(app, /workspace\.plans\.length===0&&workspace\.memories\.length===0/);
   assert.match(app, /用这份备份初始化当前设备/);
   assert.match(app, /workspace=clone\(incoming\)/);
+  assert.match(app, /合并到当前共同空间/);
 });
 
 test('each in-app backup can use the Android native file share bridge', () => {

@@ -85,8 +85,7 @@ function mergeImported(incoming){
       showSyncStatus('已用这份备份初始化当前设备，计划和回忆已恢复。');
       return;
     }
-    showSyncStatus('当前设备已有内容，无法直接导入另一个共同空间；请先备份当前内容。');
-    return;
+    if(!confirm('两台设备的共同空间不同，是否把这份备份合并到当前共同空间？当前内容不会直接删除。'))return;
   }
   const maps=(a,b)=>{const map=new Map(a.map(x=>[x.id,x]));let added=0,updated=0,conflicts=0;for(const item of b){const old=map.get(item.id);if(!old){map.set(item.id,clone(item));added++}else{conflicts++;if(new Date(item.updatedAt)>new Date(old.updatedAt)){map.set(item.id,clone(item));updated++}}}return{items:[...map.values()],added,updated,conflicts}};
   const plans=maps(workspace.plans,incoming.plans||[]),memories=maps(workspace.memories,incoming.memories||[]);
