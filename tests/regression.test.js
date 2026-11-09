@@ -80,8 +80,11 @@ test('memory detail supports photo switching, copying, downloading, and empty st
   assert.match(app, /没有保存照片/);
 });
 
-test('Android memory photo actions use native clipboard and document storage', () => {
+test('Android memory photo actions use native clipboard, gallery storage, and fallback storage', () => {
   assert.match(app, /native\.Clipboard\.write/);
+  assert.match(app, /native\.Media\.savePhoto/);
+  assert.match(app, /albumIdentifier/);
+  assert.match(app, /星愿同行/);
   assert.match(app, /directory:'DOCUMENTS'/);
   assert.match(app, /文档\/星愿同行/);
   assert.match(app, /native\.Share\.share/);
