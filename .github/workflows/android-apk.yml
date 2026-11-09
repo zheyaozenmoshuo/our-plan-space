@@ -54,6 +54,9 @@ jobs:
       - name: Sync web assets
         run: npx cap sync android
 
+      - name: Use smaller Gradle distribution
+        run: sed -i 's/gradle-8.11.1-all.zip/gradle-8.11.1-bin.zip/' android/gradle/wrapper/gradle-wrapper.properties
+
       - name: Build debug APK
         working-directory: android
         run: ./gradlew assembleDebug
